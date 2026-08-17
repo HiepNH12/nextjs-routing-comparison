@@ -95,8 +95,10 @@ nextjs-routing-comparison/
 ---
 
 ## 5. Chi tiết từng loại Routing
+![alt text](image-14.png)
 
 ### 5.1 Parallel Routing
+![alt text](image-15.png)
 
 **Khái niệm:** Render nhiều trang/khu vực (gọi là "slot") **cùng lúc, độc
 lập với nhau**, trong cùng một layout — dùng quy ước thư mục bắt đầu bằng
@@ -105,14 +107,21 @@ lập với nhau**, trong cùng một layout — dùng quy ước thư mục b�
 **Các bước thực hiện:**
 1. Tạo `app/parallel-routing/layout.js`, khai báo hàm nhận các prop tương
    ứng tên slot: `{ children, team, analytics }`.
+   ![alt text](image.png)
 2. Tạo 2 thư mục con **bắt đầu bằng `@`**: `@team/` và `@analytics/` — tên
    sau dấu `@` phải khớp chính xác tên prop ở bước 1.
+   ![alt text](image-1.png)
 3. Trong mỗi thư mục slot, tạo `page.js` chứa UI riêng của slot đó.
+   ![alt text](image-2.png)
 4. Thêm `default.js` trong mỗi slot làm giao diện dự phòng (fallback) —
    Next.js cần file này để tránh lỗi 404 khi không thể khôi phục trạng thái
    của slot lúc tải lại trang.
+   ![alt text](image-3.png)
 5. Trong `layout.js`, render cả 3 phần trong cùng cây JSX — chúng xuất hiện
    đồng thời trong 1 lần render server.
+   ![alt text](image-4.png)
+   ![alt text](image-9.png)
+
 
 **Code lõi (`app/parallel-routing/layout.js`):**
 ```jsx
@@ -139,6 +148,7 @@ với nội dung chính.
 ---
 
 ### 5.2 Nested Routing
+![alt text](image-16.png)
 
 **Khái niệm:** Mỗi thư mục trong `app/` ứng với 1 segment URL; mỗi cấp có
 thể có `layout.js` riêng, và các layout **lồng vào nhau** đúng theo cấu
@@ -147,13 +157,18 @@ trúc thư mục — layout cha luôn bao layout con.
 **Các bước thực hiện:**
 1. Tạo `app/nested-routing/layout.js` — layout cấp 1, chứa thanh điều
    hướng phụ.
+   ![alt text](image-5.png)
 2. Tạo `app/nested-routing/page.js` — nội dung trang tổng quan.
+   ![alt text](image-6.png)
 3. Tạo thư mục con `settings/` với `layout.js` riêng — layout cấp 2, chỉ
    bao các trang bên trong `settings/`.
+   ![alt text](image-7.png)
 4. Tạo tiếp 2 thư mục con `settings/profile/` và `settings/security/`, mỗi
    thư mục 1 `page.js`.
+   ![alt text](image-8.png)
 5. Kết quả: `RootLayout → NestedRoutingLayout → SettingsLayout → ProfilePage`
    — 3 lớp layout lồng nhau khi vào `/nested-routing/settings/profile`.
+   ![alt text](image-10.png)
 
 **Code lõi (`app/nested-routing/settings/layout.js`):**
 ```jsx
@@ -178,6 +193,7 @@ ban → layout nhân viên).
 ---
 
 ### 5.3 Dynamic Routing
+![alt text](image-17.png)
 
 **Khái niệm:** Đặt tên thư mục/file trong dấu ngoặc vuông để tạo ra segment
 **động**, khớp với bất kỳ giá trị nào tại vị trí đó trong URL.
@@ -186,11 +202,14 @@ ban → layout nhân viên).
 1. Tạo thư mục `app/dynamic-routing/[productId]/page.js` — dấu ngoặc vuông
    báo cho Next.js đây là segment động, tên `productId` là tên biến sẽ nhận
    được.
+   ![alt text](image-11.png)
 2. Trong component, khai báo prop `params` — **từ Next.js 15 trở đi, `params`
    là một Promise**, phải `await` trước khi đọc.
+   ![alt text](image-12.png)
 3. (Mở rộng) Tạo `app/dynamic-routing/category/[...slug]/page.js` — 3 dấu
    chấm phía trước tên biến tạo ra **Catch-all Route**, khớp với nhiều
    segment liên tiếp cùng lúc (ví dụ `/category/a/b/c` → `slug = ['a','b','c']`).
+   ![alt text](image-13.png)
 
 **Code lõi (`app/dynamic-routing/[productId]/page.js`):**
 ```jsx
@@ -211,6 +230,7 @@ trang danh mục nhiều cấp (breadcrumb động).
 ---
 
 ### 5.4 Imperative Routing
+![alt text](image-21.png)
 
 **Khái niệm:** Điều hướng **bằng code** (gọi hàm trong sự kiện/logic), đối
 lập với **Declarative Routing** (khai báo sẵn đường dẫn bằng thẻ
@@ -221,11 +241,14 @@ là kỹ thuật viết code điều hướng.
 1. Tạo `app/imperative-routing/page.js`, thêm dòng đầu tiên `'use client'`
    — bắt buộc vì hook điều hướng và sự kiện `onClick` chỉ chạy được trong
    Client Component.
+   ![alt text](image-18.png)
 2. Import hook `useRouter` từ `next/navigation` (App Router — **khác** với
    `next/router` của Pages Router).
+   ![alt text](image-19.png)
 3. Gọi `const router = useRouter()`, rồi dùng trong các trình xử lý sự
    kiện: `router.push()`, `router.replace()`, `router.back()`,
    `router.forward()`, `router.refresh()`.
+   ![alt text](image-20.png)
 
 **Code lõi:**
 ```jsx
@@ -254,6 +277,7 @@ sẵn 1 thẻ bấm để gắn `href`.
 ---
 
 ### 5.5 Redirecting Routing
+![alt text](image-22.png)
 
 **Khái niệm:** Tự động đưa người dùng từ URL này sang URL khác. Next.js có
 **3 cơ chế** độc lập, dự án minh họa cả 3.
@@ -262,8 +286,10 @@ sẵn 1 thẻ bấm để gắn `href`.
 
 **Cơ chế 1 — `redirect()` trong Server Component:**
 1. Tạo `app/redirecting-routing/server-redirect/page.js`.
+   ![alt text](image-23.png)
 2. Import `redirect` từ `next/navigation`, gọi `redirect('/duong-dan-dich')`
    ngay trong thân component (không đặt trong `try/catch` bao quanh nó).
+   ![alt text](image-24.png)
 3. Hàm này ném ra một lỗi đặc biệt (`NEXT_REDIRECT`) mà Next.js tự bắt và
    chuyển hướng — chỉ dùng được trong Server Component / Route Handler /
    Server Action.
@@ -278,8 +304,10 @@ export default function Page() {
 **Cơ chế 2 — Redirect tĩnh trong `next.config.mjs`:**
 1. Mở `next.config.mjs`, thêm hàm `async redirects()` trả về mảng quy tắc
    `{ source, destination, permanent }`.
+   ![alt text](image-25.png)
 2. `permanent: false` → HTTP 307 (tạm thời); `permanent: true` → HTTP 308
    (vĩnh viễn, trình duyệt sẽ nhớ lâu dài).
+   ![alt text](image-25.png)
 3. Không cần tạo `page.js` cho `source` — Next.js chặn và chuyển hướng
    **trước khi** tìm route tương ứng.
 
@@ -291,12 +319,16 @@ async redirects() {
 
 **Cơ chế 3 — Redirect có điều kiện trong `proxy.js`:**
 1. Tạo file `proxy.js` **ở thư mục gốc dự án** (ngang hàng `package.json`).
+
 2. Import `NextResponse` từ `next/server`, viết hàm `export function proxy(request) {...}`.
+   ![alt text](image-26.png)
 3. Đọc `request.nextUrl` (pathname, searchParams, cookies...) để quyết định
    điều kiện, trả về `NextResponse.redirect(url)` hoặc `NextResponse.next()`
    (đi tiếp bình thường).
+   ![alt text](image-27.png)
 4. Xuất thêm `export const config = { matcher: [...] }` để giới hạn phạm
    vi các route mà proxy chạy trên đó (tránh chặn mọi request kể cả ảnh, CSS).
+   ![alt text](image-26.png)
 
 ```js
 import { NextResponse } from 'next/server';
@@ -331,6 +363,7 @@ trước khi vào trang riêng tư, A/B testing theo cookie.
 ---
 
 ### 5.6 Shallow Routing
+![alt text](image-28.png)
 
 **Khái niệm:** Đổi URL trên thanh địa chỉ (và cập nhật `router.query`)
 **nhưng không chạy lại hàm lấy dữ liệu** (`getServerSideProps` /
@@ -343,16 +376,20 @@ khái niệm "hàm fetch dữ liệu của trang" tách rời như Pages Router)
 1. Tạo file `pages/shallow-routing-demo.js` (Pages Router, không phải App
    Router — không có dòng `'use client'`, vì khái niệm Server/Client
    Component chỉ tồn tại ở App Router).
+   ![alt text](image-29.png)
 2. Viết hàm `getServerSideProps` trả về dữ liệu kèm mốc thời gian
    (`renderedAt`) để quan sát khi nào nó thực sự chạy lại.
+   ![alt text](image-30.png)
 3. Trong component, dùng `useRouter()` từ **`next/router`** (khác
    `next/navigation` của App Router).
+   ![alt text](image-31.png)
 4. Viết 2 hàm cập nhật URL:
    - `router.push(url, undefined, { shallow: true })` → đổi URL, **không**
      gọi lại `getServerSideProps`.
+     ![alt text](image-32.png)
    - `router.push(url)` (mặc định `shallow: false`) → đổi URL **và** gọi
      lại `getServerSideProps`.
-
+     ![alt text](image-32.png)
 ```js
 export async function getServerSideProps() {
   return { props: { renderedAt: new Date().toISOString() } };

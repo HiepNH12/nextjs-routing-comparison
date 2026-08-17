@@ -442,23 +442,33 @@ bộ dữ liệu trang mỗi lần đổi filter.
 ## 7. Các bước đã thực hiện để xây dựng toàn bộ dự án
 
 1. Khởi tạo `package.json` thủ công với `next@16`, `react@19`, `react-dom@19`.
+   ![alt text](image-33.png)
 2. Tạo `next.config.mjs` khai báo redirect tĩnh (`redirects()`).
+   ![alt text](image-34.png)
 3. Tạo `proxy.js` ở thư mục gốc cho redirect có điều kiện (theo đúng quy
    ước Next.js 16, không phải `middleware.js`).
+   ![alt text](image-35.png)
 4. Dựng `app/layout.js` (layout gốc + thanh điều hướng) và `app/page.js`
    (trang chủ tổng hợp, có bảng so sánh).
+   ![alt text](image-36.png)
 5. Lần lượt tạo 6 thư mục con trong `app/` cho Parallel, Imperative,
    Redirecting, Nested, Dynamic Routing theo các bước mô tả ở mục 5.
+   ![alt text](image-37.png)
 6. Tạo riêng `pages/shallow-routing-demo.js` ở Pages Router cho Shallow
    Routing, vì đây là API không tồn tại ở App Router.
+   ![alt text](image-38.png)
 7. Viết `app/globals.css` cho giao diện chung.
+   ![alt text](image-39.png)
 8. Chạy `npm install`, sau đó `npm run build` để kiểm tra lỗi biên dịch —
    build thành công, tạo ra 15 route App Router + 1 route Pages Router + 1
    Proxy, không có lỗi.
+   ![alt text](image-40.png)
+   ![alt text](image-41.png)
 9. Chạy `npm run start` và dùng `curl` kiểm tra runtime thực tế: mã trạng
    thái HTTP của 3 cơ chế redirect (307 kèm header `Location` đúng), giá
    trị `params` trong dynamic route, cả 3 slot của parallel route cùng
    xuất hiện trong 1 lần tải trang.
+   ![alt text](image-42.png)
 10. Viết tài liệu README.md này.
 
 ---
